@@ -1,0 +1,26 @@
+{
+  "name": "ecomm",
+  "version": "1.0.0",
+  "description": "Gaia Soaps Shopping Cart",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server/server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mansel1990/eComm.git"
+  },
+  "author": "Mansel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mansel1990/eComm/issues"
+  },
+  "homepage": "https://github.com/mansel1990/eComm#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "concurrently": "^6.0.2",
+    "nodemon": "^2.0.7"
+  }
+}
