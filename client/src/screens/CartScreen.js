@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
 import {
@@ -104,7 +103,7 @@ const CartScreen = ({ match, location, history }) => {
             <ListGroup.Item>
               <Button
                 type="button"
-                className="btn-block"
+                className="col-12"
                 disabled={cartItems.length === 0}
                 onClick={checkoutHandler}
               >

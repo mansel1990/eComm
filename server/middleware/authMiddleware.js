@@ -1,0 +1,36 @@
+import jwt from "jsonwebtoken";
+import asyncHandler from "express-async-handler";
+import dbConn from "../config/db.js";
+import util from "util";
+
+const protect = asyncHandler(async (req, res, next) => {
+  let token;
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    try {
+      token = req.headers.authorization.split(" ")[1];
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      const query = util.promisify(dbConn.query).bind(dbConn);
+      const users = await query(
+        `SELECT * FROM ecomm.users u where u.user_id = "${decoded.id}"`
+      );
+
+      req.user = users[0];
+
+      next();
+    } catch (err) {
+      res.status(401);
+      throw new Error("Not Authorized, token failed");
+    }
+  }
+
+  if (!token) {
+    res.status(401);
+    throw new Error("Not authorized, no token");
+  }
+});
+
+export { protect };
