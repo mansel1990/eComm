@@ -15,10 +15,7 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar
-        className="navbar navbar-expand-lg navbar-dark bg-primary"
-        collapseOnSelect
-      >
+      <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>Gaia Soaps</Navbar.Brand>

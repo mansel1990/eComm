@@ -123,4 +123,17 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile };
+// Admin routes
+
+const getUsers = asyncHandler(async (req, res, next) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const users = await query(`SELECT * FROM ecomm.users`);
+    res.json(users);
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers };
