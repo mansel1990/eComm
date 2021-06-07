@@ -1,9 +1,12 @@
 import mysql from "mysql";
+import dontenv from "dotenv";
+
+dontenv.config();
 
 const dbConn = mysql.createConnection({
-  host: "www.gaiasoaps.in",
+  host: process.env.DB_HOST,
   user: "root",
-  password: "m@nish098",
+  password: process.env.DB_PWD,
 });
 
 try {
