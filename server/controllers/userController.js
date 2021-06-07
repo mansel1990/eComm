@@ -136,4 +136,79 @@ const getUsers = asyncHandler(async (req, res, next) => {
   }
 });
 
-export { authUser, getUserProfile, registerUser, updateUserProfile, getUsers };
+const deleteUser = asyncHandler(async (req, res, next) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const userID = req.params.id;
+    const users = await query(
+      `DELETE FROM ecomm.users where user_id=${userID}`
+    );
+    res.json(users);
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+const getUserById = asyncHandler(async (req, res, next) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const userId = req.params.id;
+    const user = await query(
+      `SELECT * FROM ecomm.users where user_id = ${userId}`
+    );
+    if (user.length === 0) {
+      throw new Error("User not found");
+    } else {
+      res.json(user[0]);
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+const updateUserById = asyncHandler(async (req, res, next) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  const { id, name, isAdmin, email, phone } = req.body;
+  try {
+    const userArr = await query(
+      `SELECT * FROM ecomm.users where user_id = ${id}`
+    );
+    let user = {};
+    if (userArr.length > 0) {
+      user = userArr[0];
+    }
+    if (user) {
+      const updateResult = await query(`UPDATE ecomm.users
+        SET name='${name}', 
+        email='${email}', 
+        is_admin='${Boolean(isAdmin) ? 1 : 0}', 
+        phone_number='${phone || user.phone_number}'
+        WHERE user_id=${id}`);
+      res.json({
+        id: user.user_id,
+        name: name || user.name,
+        email: email || user.email,
+        isAdmin: isAdmin,
+        phoneNumber: phone || user.phone_number,
+      });
+    } else {
+      throw new Error("User not found");
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+export {
+  authUser,
+  getUserProfile,
+  registerUser,
+  updateUserProfile,
+  getUsers,
+  deleteUser,
+  getUserById,
+  updateUserById,
+};

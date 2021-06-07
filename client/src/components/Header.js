@@ -18,7 +18,7 @@ const Header = () => {
       <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>Gaia Soaps</Navbar.Brand>
+            <Navbar.Brand>EComm</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -45,6 +45,19 @@ const Header = () => {
                     Sign in
                   </Nav.Link>
                 </LinkContainer>
+              )}
+              {userInfo && userInfo.isAdmin !== 0 && (
+                <NavDropdown title="Admin" id="adminmenu">
+                  <LinkContainer to="/admin/userList">
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/productlist">
+                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/orderlist">
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
               )}
             </Nav>
           </Navbar.Collapse>
