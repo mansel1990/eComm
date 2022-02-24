@@ -31,4 +31,19 @@ const getProductById = asyncHandler(async (req, res) => {
   }
 });
 
-export { getProducts, getProductById };
+const deleteProduct = asyncHandler(async (req, res) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const productId = req.params.id;
+    const products = await query(
+      `DELETE FROM ecomm.products where id=${productId}`
+    );
+    console.log(products);
+    res.json({ message: "Product Removed" });
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+export { getProducts, getProductById, deleteProduct };

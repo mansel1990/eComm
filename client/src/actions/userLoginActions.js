@@ -24,6 +24,7 @@ import {
   USER_UPDATE_SUCCESS,
 } from "../constants/userConstants";
 import axios from "axios";
+import { CART_RESET } from "../constants/cartConstants";
 
 export const login = (email, password) => async (dispatch) => {
   try {
@@ -72,6 +73,9 @@ export const logout = () => (dispatch) => {
   });
   dispatch({
     type: USER_LIST_RESET,
+  });
+  dispatch({
+    type: CART_RESET,
   });
 };
 

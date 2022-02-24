@@ -149,7 +149,7 @@ const ProfileScreen = ({ history, location }) => {
                 <tr key={order.order_id}>
                   <td>{order.order_id}</td>
                   <td>{order.date_of_purchase.substring(0, 10)}</td>
-                  <td>{order.total_cost}</td>
+                  <td>{order.total_price}</td>
                   <td>
                     {order.is_paid ? (
                       order.paid_on.substring(0, 10)
