@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { createOrder } from "../actions/orderActions";
+import { createOrder, getMyOrders } from "../actions/orderActions";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Message from "../components/Message";
 
@@ -23,6 +23,7 @@ const PlaceOrderScreen = ({ history }) => {
 
   useEffect(() => {
     if (success) {
+      dispatch(getMyOrders());
       history.push(`/order/${order.orderId}`);
     }
     // eslint-disable-next-line

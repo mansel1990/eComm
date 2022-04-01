@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userLoginActions";
+import { isEmpty } from "lodash";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Header = () => {
     dispatch(logout());
   };
 
+  console.log(userInfo);
   return (
     <header>
       <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
@@ -29,7 +31,7 @@ const Header = () => {
                   Cart
                 </Nav.Link>
               </LinkContainer>
-              {userInfo ? (
+              {!isEmpty(userInfo) ? (
                 <NavDropdown title={userInfo.name} id="username">
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>Profile</NavDropdown.Item>
@@ -46,7 +48,7 @@ const Header = () => {
                   </Nav.Link>
                 </LinkContainer>
               )}
-              {userInfo && userInfo.isAdmin !== 0 && (
+              {userInfo && userInfo.isAdmin === 1 && (
                 <NavDropdown title="Admin" id="adminmenu">
                   <LinkContainer to="/admin/userList">
                     <NavDropdown.Item>Users</NavDropdown.Item>

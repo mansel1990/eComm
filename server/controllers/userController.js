@@ -9,7 +9,7 @@ const authUser = asyncHandler(async (req, res, next) => {
   try {
     const { email, password } = req.body;
     const userArray = await query(
-      `SELECT * FROM ecomm.users u where u.email = "${email}"`
+      `SELECT * FROM users u where u.email = "${email}"`
     );
     if (userArray.length === 0) {
       throw new Error("Invalid Credentials");
@@ -40,7 +40,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
   try {
     const { name, email, password, phone } = req.body;
     const userArray = await query(
-      `SELECT * FROM ecomm.users u where u.email = "${email}"`
+      `SELECT * FROM users u where u.email = "${email}"`
     );
     if (userArray.length > 0 || !name || !email || !password || !phone) {
       throw new Error("User data incorrect");
@@ -49,7 +49,7 @@ const registerUser = asyncHandler(async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(password, salt);
 
-    const insertUser = `INSERT INTO ecomm.users 
+    const insertUser = `INSERT INTO users 
         (name, email, password, is_admin, phone_number) 
         VALUES('${name}', '${email}', '${encryptedPassword}', 0, '${phone}');`;
     const result = await query(insertUser);
@@ -100,7 +100,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
   try {
     const user = req.user;
     if (user) {
-      const updateResult = await query(`UPDATE ecomm.users
+      const updateResult = await query(`UPDATE users
         SET name='${name || user.name}', 
         email='${email || user.email}', 
         password='${encryptedPassword || user.password}', 
@@ -128,7 +128,7 @@ const updateUserProfile = asyncHandler(async (req, res, next) => {
 const getUsers = asyncHandler(async (req, res, next) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
-    const users = await query(`SELECT * FROM ecomm.users`);
+    const users = await query(`SELECT * FROM users`);
     res.json(users);
   } catch (error) {
     res.status(404);
@@ -140,9 +140,7 @@ const deleteUser = asyncHandler(async (req, res, next) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
     const userID = req.params.id;
-    const users = await query(
-      `DELETE FROM ecomm.users where user_id=${userID}`
-    );
+    const users = await query(`DELETE FROM users where user_id=${userID}`);
     res.json(users);
   } catch (error) {
     res.status(404);
@@ -154,9 +152,7 @@ const getUserById = asyncHandler(async (req, res, next) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
     const userId = req.params.id;
-    const user = await query(
-      `SELECT * FROM ecomm.users where user_id = ${userId}`
-    );
+    const user = await query(`SELECT * FROM users where user_id = ${userId}`);
     if (user.length === 0) {
       throw new Error("User not found");
     } else {
@@ -172,15 +168,13 @@ const updateUserById = asyncHandler(async (req, res, next) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   const { id, name, isAdmin, email, phone } = req.body;
   try {
-    const userArr = await query(
-      `SELECT * FROM ecomm.users where user_id = ${id}`
-    );
+    const userArr = await query(`SELECT * FROM users where user_id = ${id}`);
     let user = {};
     if (userArr.length > 0) {
       user = userArr[0];
     }
     if (user) {
-      const updateResult = await query(`UPDATE ecomm.users
+      const updateResult = await query(`UPDATE users
         SET name='${name}', 
         email='${email}', 
         is_admin='${Boolean(isAdmin) ? 1 : 0}', 

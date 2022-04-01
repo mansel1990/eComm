@@ -15,11 +15,10 @@ const addOrderItems = asyncHandler(async (req, res) => {
   if (orderItems && orderItems.length === 0) {
     res.status(400);
     throw new Error("No order items");
-    return;
   }
   try {
     const productsString = JSON.stringify(orderItems);
-    const insertOrder = `INSERT INTO ecomm.orders
+    const insertOrder = `INSERT INTO orders
         (user_id, order_items, shipping_address, payment_method, items_price, shipping_price, total_price)
         VALUES(${req.user.user_id}, '${productsString}', '${shippingAddress}', '${paymentMethod}', ${itemsPrice}, ${shippingPrice}, ${totalPrice});`;
 
@@ -38,7 +37,7 @@ const getOrderById = asyncHandler(async (req, res) => {
   try {
     const order = await query(
       `select u.name, u.email, o.* 
-        from ecomm.orders o, ecomm.users u 
+        from orders o, users u 
         where o.user_id = u.user_id and order_id = ${req.params.id}`
     );
     if (order && order.length > 0) {
@@ -62,8 +61,8 @@ const getMyOrders = asyncHandler(async (req, res) => {
         u.email,
         o.*
       from
-        ecomm.users u,
-        ecomm.orders o
+        users u,
+        orders o
       where
         o.user_id = u.user_id
         and o.user_id = ${req.user.user_id}`

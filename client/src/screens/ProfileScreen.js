@@ -50,7 +50,7 @@ const ProfileScreen = ({ history, location }) => {
         setPhone(user.phone);
       }
     }
-  }, [history, userInfo, user, dispatch, success]);
+  }, [history, userInfo, user, dispatch, success, orders]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -148,7 +148,11 @@ const ProfileScreen = ({ history, location }) => {
               {orders.map((order) => (
                 <tr key={order.order_id}>
                   <td>{order.order_id}</td>
-                  <td>{order.date_of_purchase.substring(0, 10)}</td>
+                  <td>
+                    {order.date_of_purchase
+                      ? order.date_of_purchase.substring(0, 10)
+                      : new Date().toJSON().slice(0, 10).replace(/-/g, "/")}
+                  </td>
                   <td>{order.total_price}</td>
                   <td>
                     {order.is_paid ? (
