@@ -2,8 +2,11 @@ import { createStore, combineReducers, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
+  productAddReducers,
+  productDeleteReducers,
   productDetailsReducers,
   productListReducers,
+  productUpdateReducers,
 } from "./reducers/productReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import {
@@ -35,6 +38,9 @@ const reducer = combineReducers({
   userList: userListReducers,
   userDelete: userDeleteReducers,
   userUpdate: userUpdateReducers,
+  productDelete: productDeleteReducers,
+  productAdd: productAddReducers,
+  productUpdate: productUpdateReducers,
 });
 
 const cartItemsFromStorage = localStorage.getItem("cartItems")
