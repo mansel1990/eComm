@@ -7,6 +7,7 @@ import { getUserDetails, updateUserProfile } from "../actions/userLoginActions";
 import { getMyOrders } from "../actions/orderActions";
 import { LinkContainer } from "react-router-bootstrap";
 import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
+import { isEmpty } from "lodash";
 
 const ProfileScreen = ({ history, location }) => {
   const [email, setEmail] = useState("");
@@ -37,10 +38,10 @@ const ProfileScreen = ({ history, location }) => {
   const { loading: ordersLoading, error: ordersError, orders } = myOrderList;
 
   useEffect(() => {
-    if (!userInfo) {
+    if (isEmpty(userInfo)) {
       history.push("/login");
     } else {
-      if (!user || !user.name || success) {
+      if (!user || userInfo.name !== user.name || success) {
         dispatch({ type: USER_UPDATE_PROFILE_RESET });
         dispatch(getUserDetails("profile"));
         dispatch(getMyOrders());

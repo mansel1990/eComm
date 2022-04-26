@@ -12,6 +12,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 const AddProductForm = (props) => {
   const [product, setProduct] = useState({
     name: "",
+    oneLiner: "",
     description: "",
     price: 200,
     countInStock: 0,
@@ -45,6 +46,16 @@ const AddProductForm = (props) => {
               type="text"
               value={product.name}
               onChange={(e) => setProduct({ ...product, name: e.target.value })}
+            />
+            <TextField
+              id="product-oneliner-input"
+              className="py-3 my-2"
+              label="One Line Description"
+              type="text"
+              value={product.oneLiner}
+              onChange={(e) =>
+                setProduct({ ...product, oneLiner: e.target.value })
+              }
             />
             <TextField
               id="product-name-input"

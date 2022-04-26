@@ -1,4 +1,6 @@
 import {
+  ALL_ORDER_LIST_REQUEST,
+  ALL_ORDER_LIST_SUCCESS,
   MY_ORDER_LIST_FAIL,
   MY_ORDER_LIST_REQUEST,
   MY_ORDER_LIST_SUCCESS,
@@ -69,6 +71,28 @@ export const myOrderListReducers = (state = { orders: [] }, action) => {
       return {
         loading: false,
         orders: action.payload,
+      };
+    case MY_ORDER_LIST_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const allOrdersReducers = (state = { allOrders: [] }, action) => {
+  switch (action.type) {
+    case ALL_ORDER_LIST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ALL_ORDER_LIST_SUCCESS:
+      return {
+        loading: false,
+        allOrders: action.payload,
       };
     case MY_ORDER_LIST_FAIL:
       return {

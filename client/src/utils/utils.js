@@ -8,3 +8,15 @@ export const numberValidator = (newValue, row, column) => {
   }
   return true;
 };
+
+export const dateFormatter = (val, row) => {
+  var options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  let date = new Date(Date.parse(val));
+  const res = date.toLocaleDateString("en-US", options);
+  return res;
+};

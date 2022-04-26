@@ -8,3 +8,8 @@ CREATE TABLE `products` (
     `image` varchar(100) DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1;
+
+ALTER TABLE
+    ecomm.products
+ADD
+    one_line_desc varchar(100) NULL;

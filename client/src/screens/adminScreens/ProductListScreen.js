@@ -65,6 +65,7 @@ const ProductListScreen = ({ history, match }) => {
       updateProduct({
         id: product.id,
         name: product.name,
+        oneLiner: product.one_line_desc,
         description: product.description,
         price: product.price,
         countInStock: product.countInStock,

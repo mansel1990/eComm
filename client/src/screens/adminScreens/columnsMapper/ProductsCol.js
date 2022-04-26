@@ -13,6 +13,11 @@ export const productColumns = [
     sort: true,
   },
   {
+    dataField: "one_line_desc",
+    text: "One Liner",
+    sort: true,
+  },
+  {
     dataField: "description",
     text: "Description",
     sort: true,

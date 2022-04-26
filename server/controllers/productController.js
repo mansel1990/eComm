@@ -42,7 +42,6 @@ const deleteProduct = asyncHandler(async (req, res) => {
       const products = await query(
         `DELETE FROM products where id=${productId}`
       );
-      console.log(products);
       res.json({ message: "Product Removed" });
     } else {
       res.status(404);
@@ -57,10 +56,11 @@ const deleteProduct = asyncHandler(async (req, res) => {
 const createProduct = asyncHandler(async (req, res) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
-    const { name, description, price, countInStock } = req.body.product;
+    const { name, description, price, countInStock, oneLiner } =
+      req.body.product;
     const insertUser = `INSERT INTO products 
-      (name, description, price, countInStock, image) 
-      VALUES('${name}', '${description}', ${price}, ${countInStock}, '');`;
+      (name, description, price, countInStock, one_line_desc, image) 
+      VALUES('${name}', '${description}', ${price}, ${countInStock}, '${oneLiner}', '');`;
     const result = await query(insertUser);
 
     res.status(201).json({
@@ -79,7 +79,8 @@ const createProduct = asyncHandler(async (req, res) => {
 const editProduct = asyncHandler(async (req, res) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
-    const { id, name, description, price, countInStock } = req.body.product;
+    const { id, name, description, price, countInStock, oneLiner } =
+      req.body.product;
 
     const prodArr = await query(`SELECT * FROM products where id = ${id}`);
     let product = {};
@@ -89,7 +90,8 @@ const editProduct = asyncHandler(async (req, res) => {
 
     if (product) {
       const updateResult = await query(`UPDATE products
-        SET name='${name}', 
+        SET name='${name}',
+        one_line_desc='${oneLiner}', 
         description='${description}', 
         price='${price}', 
         countInStock='${countInStock}'
@@ -97,6 +99,7 @@ const editProduct = asyncHandler(async (req, res) => {
       res.json({
         id: product.id,
         name: name || product.name,
+        one_line_desc: oneLiner || product.one_line_desc,
         description: description || product.description,
         price: price || product.price,
         countInStock: countInStock || product.countInStock,

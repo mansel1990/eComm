@@ -79,4 +79,31 @@ const getMyOrders = asyncHandler(async (req, res) => {
   }
 });
 
-export { addOrderItems, getOrderById, getMyOrders };
+const getAllOrders = asyncHandler(async (req, res) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const orders = await query(
+      `select
+      u.user_id,
+      u.name,
+      u.email,
+      o.*
+    from
+      users u,
+      orders o
+    where
+      o.user_id = u.user_id`
+    );
+    if (orders && orders.length > 0) {
+      orders.map((order) => (order.orderItems = JSON.parse(order.order_items)));
+      res.json(orders);
+    } else {
+      throw new Error("No Orders");
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+export { addOrderItems, getOrderById, getMyOrders, getAllOrders };

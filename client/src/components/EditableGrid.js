@@ -26,6 +26,7 @@ const EditableGrid = (props) => {
     deleteHandler,
     updateHandler,
     addHandler,
+    actionsRequired = true,
   } = props;
 
   const [rowData, setRowData] = useState(rows); // rowData
@@ -103,15 +104,17 @@ const EditableGrid = (props) => {
     },
   };
 
-  const actionObj = columns.find((o) => o.dataField === "actions");
-  if (!actionObj) {
-    columns.push(actionField);
-  } else {
-    columns.splice(
-      columns.findIndex((o) => o.dataField === "actions"),
-      1
-    );
-    columns.push(actionField);
+  if (actionsRequired) {
+    const actionObj = columns.find((o) => o.dataField === "actions");
+    if (!actionObj) {
+      columns.push(actionField);
+    } else {
+      columns.splice(
+        columns.findIndex((o) => o.dataField === "actions"),
+        1
+      );
+      columns.push(actionField);
+    }
   }
 
   const defaultSorted = [

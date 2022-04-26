@@ -13,3 +13,13 @@ CREATE TABLE `orders` (
     KEY `orders_FK` (`user_id`),
     CONSTRAINT `orders_FK` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 1;
+
+ALTER TABLE
+    orders
+ADD
+    paid_on DATETIME NULL;
+
+ALTER TABLE
+    orders
+ADD
+    delivered_on DATETIME NULL;
