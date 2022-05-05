@@ -10,13 +10,13 @@ import Message from "../components/Message";
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
-
   const productList = useSelector((state) => {
     return state.productList;
   });
+
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
   const { loading, products, error } = productList;
 

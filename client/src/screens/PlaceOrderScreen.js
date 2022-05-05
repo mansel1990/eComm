@@ -1,3 +1,4 @@
+import { isEmpty } from "lodash";
 import React, { useEffect } from "react";
 import { Button, Row, Col, ListGroup, Image, Card } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,13 +22,17 @@ const PlaceOrderScreen = ({ history }) => {
   const orderCreate = useSelector((state) => state.orderCreate);
   const { order, success, error } = orderCreate;
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
   useEffect(() => {
+    if (isEmpty(userInfo)) {
+      history.push("/");
+    }
     if (success) {
       dispatch(getMyOrders());
       history.push(`/order/${order.orderId}`);
     }
-    // eslint-disable-next-line
-  }, [history, success]);
+  }, [history, success, userInfo, dispatch, order]);
 
   const placeOrderHandler = () => {
     dispatch(

@@ -1,18 +1,61 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav, Container, NavDropdown } from "react-bootstrap";
 import { logout } from "../actions/userLoginActions";
 import { isEmpty } from "lodash";
 
+import Badge from "@mui/material/Badge";
+import Notifications from "@mui/icons-material/Notifications";
+
+import Pusher from "pusher-js/with-encryption";
+import { getNotAcceptedOrderCount } from "../actions/orderActions";
+import {
+  PUSHER_APP_CLUSTER,
+  PUSHER_APP_KEY,
+} from "../constants/commonConstants";
+
 const Header = () => {
   const dispatch = useDispatch();
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  const { notAcceptedOrderCount } = useSelector(
+    (state) => state.notAcceptedOrderCount
+  );
+
   const logoutHandler = () => {
     dispatch(logout());
   };
+
+  const [newOrderCount, setNewOrderCount] = useState(0);
+
+  if (userInfo && userInfo.isAdmin === 1) {
+    const pusher = new Pusher(PUSHER_APP_KEY, {
+      cluster: PUSHER_APP_CLUSTER,
+    });
+
+    const channel = pusher.subscribe("order-channel");
+    channel.bind("place-order-event", function (data) {
+      if (
+        newOrderCount &&
+        newOrderCount > 0 &&
+        data.unattendedOrders !== newOrderCount
+      ) {
+        setNewOrderCount(data.unattendedOrders);
+      }
+    });
+  }
+
+  useEffect(() => {
+    if (userInfo && userInfo.isAdmin) {
+      dispatch(getNotAcceptedOrderCount());
+    }
+  }, [dispatch, userInfo]);
+
+  useEffect(() => {
+    setNewOrderCount(notAcceptedOrderCount);
+  }, [notAcceptedOrderCount]);
 
   return (
     <header>
@@ -48,17 +91,24 @@ const Header = () => {
                 </LinkContainer>
               )}
               {userInfo && userInfo.isAdmin === 1 && (
-                <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/userList">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/productlist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
+                <>
+                  <NavDropdown title="Admin" id="adminmenu">
+                    <LinkContainer to="/admin/userList">
+                      <NavDropdown.Item>Users</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/productlist">
+                      <NavDropdown.Item>Products</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/orderlist">
+                      <NavDropdown.Item>Orders</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                  <div style={{ padding: "2% 0 0 0" }}>
+                    <Badge badgeContent={newOrderCount} color="primary">
+                      <Notifications color="action" />
+                    </Badge>
+                  </div>
+                </>
               )}
             </Nav>
           </Navbar.Collapse>

@@ -48,8 +48,6 @@ export const cartReducer = (
       return {
         ...state,
         cartItems: [],
-        shippingAddress: {},
-        paymentMethod: {},
       };
     default:
       return state;

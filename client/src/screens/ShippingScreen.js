@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import { isEmpty } from "lodash";
+import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { saveShippingAddress } from "../actions/cartActions";
+import { resetOrder } from "../actions/orderActions";
 import CheckoutSteps from "../components/CheckoutSteps";
 import FormContainer from "../components/FormContainer";
 
@@ -15,9 +17,18 @@ const ShippingScreen = ({ history }) => {
   const [city, setCity] = useState(shippingAddress.city);
   const [pincode, setPincode] = useState(shippingAddress.pincode);
 
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  useEffect(() => {
+    if (isEmpty(userInfo)) {
+      history.push("/");
+    }
+  }, [history, userInfo]);
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(saveShippingAddress({ address, city, pincode }));
+    dispatch(resetOrder());
     history.push("/payment");
   };
   return (

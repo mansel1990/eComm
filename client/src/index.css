@@ -9,3 +9,10 @@ h2 {
   padding: 0.5rem 0rem;
   font-size: 1.4rem;
 }
+.sameline-cls {
+  display: inline-flex;
+}
+.center-div-hor {
+  margin: auto;
+  width: 30%;
+}

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
+import { isEmpty } from "lodash";
 import {
   Button,
   Card,
@@ -26,13 +27,18 @@ const CartScreen = ({ match, location, history }) => {
   }, [dispatch, productId, qty]);
 
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
-    history.push("/login?redirect=shipping");
+    if (isEmpty(userInfo)) {
+      history.push("/login");
+    } else {
+      history.push("/shipping");
+    }
   };
 
   return (

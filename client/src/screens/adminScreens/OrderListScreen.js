@@ -43,6 +43,7 @@ const OrderListScreen = ({ history }) => {
           id="order_id"
           addIconVal={false}
           actionsRequired={false}
+          sortOrder="desc"
         />
       )}
     </>

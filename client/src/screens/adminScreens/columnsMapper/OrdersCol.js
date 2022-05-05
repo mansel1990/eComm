@@ -1,6 +1,7 @@
 import { Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { dateFormatter } from "../../../utils/utils";
+import { dateFormatter, trueFalseFormatter } from "../../../utils/utils";
+
 const detailsFormatter = (val, row) => {
   return (
     <Link to={`/order/${row.order_id}`}>
@@ -110,11 +111,23 @@ export const orderColumns = [
     formatter: detailsFormatter,
   },
   {
+    dataField: "order_accepted",
+    text: "Accepted?",
+    editable: false,
+    formatter: trueFalseFormatter,
+  },
+  {
     dataField: "paid_on",
     text: "Paid on",
     editable: false,
     isDummyField: true,
     formatter: paidOnFormatter,
+  },
+  {
+    dataField: "shipped",
+    text: "Shipped?",
+    editable: false,
+    formatter: trueFalseFormatter,
   },
   {
     dataField: "delivered_on",

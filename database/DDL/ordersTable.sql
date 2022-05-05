@@ -23,3 +23,13 @@ ALTER TABLE
     orders
 ADD
     delivered_on DATETIME NULL;
+
+ALTER TABLE
+    orders
+ADD
+    order_accepted BOOL NULL;
+
+ALTER TABLE
+    orders
+ADD
+    shipped BOOL NULL;

@@ -27,6 +27,7 @@ const EditableGrid = (props) => {
     updateHandler,
     addHandler,
     actionsRequired = true,
+    sortOrder = "asc",
   } = props;
 
   const [rowData, setRowData] = useState(rows); // rowData
@@ -120,7 +121,7 @@ const EditableGrid = (props) => {
   const defaultSorted = [
     {
       dataField: id,
-      order: "asc",
+      order: sortOrder,
     },
   ];
 
