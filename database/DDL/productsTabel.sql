@@ -10,6 +10,6 @@ CREATE TABLE `products` (
 ) ENGINE = InnoDB AUTO_INCREMENT = 1;
 
 ALTER TABLE
-    ecomm.products
+    products
 ADD
     one_line_desc varchar(100) NULL;

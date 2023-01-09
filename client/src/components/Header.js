@@ -62,7 +62,7 @@ const Header = () => {
       <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>EComm</Navbar.Brand>
+            <Navbar.Brand>Gaia Soaps</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -103,10 +103,15 @@ const Header = () => {
                       <NavDropdown.Item>Orders</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
-                  <div style={{ padding: "2% 0 0 0" }}>
-                    <Badge badgeContent={newOrderCount} color="primary">
-                      <Notifications color="action" />
-                    </Badge>
+                  <div style={{ padding: "2% 0 0 0", cursor: "pointer" }}>
+                    <LinkContainer to="/admin/orderlist">
+                      <Badge
+                        badgeContent={newOrderCount}
+                        sx={{ color: "#f1fdff" }}
+                      >
+                        <Notifications sx={{ color: "#f1fdff" }} />
+                      </Badge>
+                    </LinkContainer>
                   </div>
                 </>
               )}

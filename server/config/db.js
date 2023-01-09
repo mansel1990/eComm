@@ -19,6 +19,7 @@ const dbConnProd = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PWD,
   database: process.env.DB_NAME,
+  multipleStatements: true,
 });
 
 const dbConn = mysql.createPool({
@@ -28,6 +29,7 @@ const dbConn = mysql.createPool({
   user: process.env.LOCAL_DB_USER,
   password: process.env.LOCAL_DB_PWD,
   database: process.env.LOCAL_DB_NAME,
+  multipleStatements: true,
 });
 
 if (env === "prod") {

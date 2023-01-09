@@ -22,6 +22,26 @@ const addOrderItems = asyncHandler(async (req, res) => {
   }
   try {
     const productsString = JSON.stringify(orderItems);
+
+    let productIdArray = [];
+    orderItems.forEach((e) => {
+      productIdArray.push({ id: e.product, qty: e.qty });
+    });
+
+    let updateQuery = "";
+    productIdArray.forEach((el) => {
+      updateQuery =
+        updateQuery +
+        `
+        UPDATE products
+          SET countInStock=countInStock-${el.qty}
+        WHERE 
+          id in (${el.id});
+      `;
+    });
+
+    const getProductStockCount = await query(updateQuery);
+
     const insertOrder = `INSERT INTO orders
         (user_id, order_items, shipping_address, payment_method, items_price, shipping_price, total_price)
         VALUES(${req.user.user_id}, '${productsString}', '${shippingAddress}', '${paymentMethod}', ${itemsPrice}, ${shippingPrice}, ${totalPrice});`;
