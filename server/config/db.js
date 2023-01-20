@@ -36,6 +36,7 @@ if (env === "prod") {
   dbConn = dbConnProd;
 }
 
+//Sample
 /* try {
   dbConn.connect((err) => {
     if (err) {
