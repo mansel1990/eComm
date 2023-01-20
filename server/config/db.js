@@ -22,7 +22,7 @@ const dbConnProd = mysql.createPool({
   multipleStatements: true,
 });
 
-const dbConn = mysql.createPool({
+let dbConn = mysql.createPool({
   connectionLimit: 10,
   acquireTimeout: 10000,
   host: process.env.LOCAL_DB_HOST,
