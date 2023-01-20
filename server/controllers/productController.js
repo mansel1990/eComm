@@ -5,7 +5,7 @@ import asyncHandler from "express-async-handler";
 const getProducts = asyncHandler(async (req, res) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
-    const products = await query("SELECT * FROM ecomm.products order by id");
+    const products = await query(`SELECT * FROM products order by id`);
     res.json(products);
   } catch (error) {
     res.status(400);
@@ -17,7 +17,7 @@ const getProductById = asyncHandler(async (req, res) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
     const product = await query(
-      `SELECT * from ecomm.products where id = ${req.params.id}`
+      `SELECT * from products where id = ${req.params.id}`
     );
     if (product.length > 0) {
       res.json(product[0]);
@@ -35,15 +35,89 @@ const deleteProduct = asyncHandler(async (req, res) => {
   const query = util.promisify(dbConn.query).bind(dbConn);
   try {
     const productId = req.params.id;
-    const products = await query(
-      `DELETE FROM ecomm.products where id=${productId}`
+    const product = await query(
+      `SELECT * from products where id = ${productId}`
     );
-    console.log(products);
-    res.json({ message: "Product Removed" });
+    if (product.length > 0) {
+      const products = await query(
+        `DELETE FROM products where id=${productId}`
+      );
+      res.json({ message: "Product Removed" });
+    } else {
+      res.status(404);
+      throw new Error("Product Not Found!!");
+    }
   } catch (error) {
     res.status(404);
     throw new Error(error);
   }
 });
 
-export { getProducts, getProductById, deleteProduct };
+const createProduct = asyncHandler(async (req, res) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const { name, description, price, countInStock, oneLiner } =
+      req.body.product;
+    const insertUser = `INSERT INTO products 
+      (name, description, price, countInStock, one_line_desc, image) 
+      VALUES('${name}', '${description}', ${price}, ${countInStock}, '${oneLiner}', '');`;
+    const result = await query(insertUser);
+
+    res.status(201).json({
+      id: result.insertId,
+      name: name,
+      description,
+      price,
+      countInStock,
+    });
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+const editProduct = asyncHandler(async (req, res) => {
+  const query = util.promisify(dbConn.query).bind(dbConn);
+  try {
+    const { id, name, description, price, countInStock, oneLiner } =
+      req.body.product;
+
+    const prodArr = await query(`SELECT * FROM products where id = ${id}`);
+    let product = {};
+    if (prodArr.length > 0) {
+      product = prodArr[0];
+    }
+
+    if (product) {
+      const updateResult = await query(`UPDATE products
+        SET name='${name}',
+        one_line_desc='${oneLiner}', 
+        description='${description}', 
+        price='${price}', 
+        countInStock='${countInStock}'
+        WHERE id=${id}`);
+      res.json({
+        id: product.id,
+        name: name || product.name,
+        one_line_desc: oneLiner || product.one_line_desc,
+        description: description || product.description,
+        price: price || product.price,
+        countInStock: countInStock || product.countInStock,
+      });
+    } else {
+      res.status(404);
+      throw new Error("Product not found");
+    }
+  } catch (error) {
+    res.status(404);
+    throw new Error(error);
+  }
+});
+
+export {
+  getProducts,
+  getProductById,
+  deleteProduct,
+  createProduct,
+  editProduct,
+};

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import { isEmpty } from "lodash";
+import React, { useState, useEffect } from "react";
 import { Button, Col, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { savePaymentMethod } from "../actions/cartActions";
@@ -8,6 +9,14 @@ import FormContainer from "../components/FormContainer";
 const PaymentScreen = ({ history }) => {
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
+
+  const { userInfo } = useSelector((state) => state.userLogin);
+
+  useEffect(() => {
+    if (isEmpty(userInfo)) {
+      history.push("/");
+    }
+  }, [history, userInfo]);
 
   if (!shippingAddress) {
     history.push("/shipping");

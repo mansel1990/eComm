@@ -10,19 +10,19 @@ import Message from "../components/Message";
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
-
   const productList = useSelector((state) => {
     return state.productList;
   });
+
+  useEffect(() => {
+    dispatch(listProducts());
+  }, [dispatch]);
 
   const { loading, products, error } = productList;
 
   return (
     <>
-      <h1> Latest Products</h1>
+      <h1> Products</h1>
       {loading ? (
         <Loader />
       ) : error ? (

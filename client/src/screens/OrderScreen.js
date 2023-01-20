@@ -31,7 +31,7 @@ const OrderScreen = ({ match }) => {
     <Message variant="danger">{error}</Message>
   ) : (
     <>
-      <h1>Order {myOrder.order_id}</h1>
+      <h1>Order</h1>
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -91,7 +91,7 @@ const OrderScreen = ({ match }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ₹{item.price} = ₹{item.qty * item.price}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -110,25 +110,28 @@ const OrderScreen = ({ match }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${myOrder.items_price}</Col>
+                  <Col>₹{myOrder.items_price}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${myOrder.shipping_price}</Col>
+                  <Col>₹{myOrder.shipping_price}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${myOrder.total_price}</Col>
+                  <Col>₹{myOrder.total_price}</Col>
                 </Row>
               </ListGroup.Item>
             </ListGroup>
           </Card>
         </Col>
       </Row>
+      <Link className="btn btn-primary m-3" to="/">
+        Back Home
+      </Link>
     </>
   );
 };

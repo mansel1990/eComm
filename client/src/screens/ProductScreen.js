@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getProductDetails } from "../actions/productActions";
 import Loader from "../components/Loader";
 import Message from "../components/Message";
+import parse from "html-react-parser";
 
 const ProductScreen = ({ history, match }) => {
   const [qty, setQty] = useState(1);
@@ -30,6 +31,13 @@ const ProductScreen = ({ history, match }) => {
 
   const addToCartHandler = () => {
     history.push(`/cart/${match.params.id}?qty=${qty}`);
+  };
+
+  const parseDesc = () => {
+    if (product.description) {
+      return parse(product.description);
+    }
+    return null;
   };
 
   return (
@@ -51,10 +59,8 @@ const ProductScreen = ({ history, match }) => {
               <ListGroup.Item>
                 <h3>{product.name}</h3>
               </ListGroup.Item>
-              <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
-              <ListGroup.Item>
-                Description: {product.description}
-              </ListGroup.Item>
+              <ListGroup.Item>Price: ₹{product.price}</ListGroup.Item>
+              <ListGroup.Item>Description: {parseDesc()}</ListGroup.Item>
             </ListGroup>
           </Col>
           <Col md={3}>
@@ -64,7 +70,7 @@ const ProductScreen = ({ history, match }) => {
                   <Row>
                     <Col>Price:</Col>
                     <Col>
-                      <strong>${product.price}</strong>
+                      <strong>₹{product.price}</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>

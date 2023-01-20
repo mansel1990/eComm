@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import { Link } from "react-router-dom";
+import { isEmpty } from "lodash";
 import {
   Button,
   Card,
@@ -26,13 +27,18 @@ const CartScreen = ({ match, location, history }) => {
   }, [dispatch, productId, qty]);
 
   const { cartItems } = useSelector((state) => state.cart);
+  const { userInfo } = useSelector((state) => state.userLogin);
 
   const removeFromCartHandler = (id) => {
     dispatch(removeFromCart(id));
   };
 
   const checkoutHandler = () => {
-    history.push("/login?redirect=shipping");
+    if (isEmpty(userInfo)) {
+      history.push("/login");
+    } else {
+      history.push("/shipping");
+    }
   };
 
   return (
@@ -54,7 +60,7 @@ const CartScreen = ({ match, location, history }) => {
                   <Col md={3}>
                     <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
-                  <Col md={2}>${item.price}</Col>
+                  <Col md={2}>₹{item.price}</Col>
                   <Col md={2}>
                     <Form.Control
                       as="select"
@@ -95,7 +101,7 @@ const CartScreen = ({ match, location, history }) => {
                 Sub Total ({cartItems.reduce((acc, cur) => acc + cur.qty, 0)})
                 items
               </h2>
-              $
+              ₹
               {cartItems
                 .reduce((acc, cur) => acc + cur.qty * cur.price, 0)
                 .toFixed(2)}

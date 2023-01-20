@@ -1,16 +1,43 @@
 import React, { useEffect } from "react";
-import { Button, Table, Row, Col } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import Message from "../../components/Message";
-import { listProducts } from "../../actions/productActions";
+import {
+  addProduct,
+  deleteProduct,
+  listProducts,
+  updateProduct,
+} from "../../actions/productActions";
+import EditableGrid from "../../components/EditableGrid";
+import { productColumns } from "./columnsMapper/ProductsCol";
 
 const ProductListScreen = ({ history, match }) => {
   const dispatch = useDispatch();
 
   const productList = useSelector((state) => state.productList);
   const { loading, error, products } = productList;
+
+  const productDelete = useSelector((state) => state.productDelete);
+  const {
+    loading: loadingDelete,
+    error: errorDelete,
+    success: successDelete,
+  } = productDelete;
+
+  const productAdd = useSelector((state) => state.productAdd);
+  const {
+    loading: loadingAdd,
+    error: errorAdd,
+    success: successAdd,
+  } = productAdd;
+
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
 
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
@@ -21,71 +48,58 @@ const ProductListScreen = ({ history, match }) => {
     } else {
       history.push("/login");
     }
-  }, [dispatch, history, userInfo]);
+  }, [dispatch, history, userInfo, successDelete, successAdd, successUpdate]);
+
+  const addProductHandler = (product) => {
+    dispatch(addProduct(product));
+  };
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
-      //
+      dispatch(deleteProduct(id));
     }
   };
-  const createProductHandler = () => {};
+
+  const updateHandler = (product) => {
+    dispatch(
+      updateProduct({
+        id: product.id,
+        name: product.name,
+        oneLiner: product.one_line_desc,
+        description: product.description,
+        price: product.price,
+        countInStock: product.countInStock,
+      })
+    );
+  };
+
   return (
     <>
       <Row className="align-items-center">
         <Col>
           <h1>Products</h1>
         </Col>
-        <Col className="text-end">
-          <Button className="my-3" onClick={createProductHandler}>
-            <i className="fas fa-plus" />
-            Add Product
-          </Button>
-        </Col>
       </Row>
+      {loadingDelete && <Loader />}
+      {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+      {loadingUpdate && <Loader />}
+      {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
+      {loadingAdd && <Loader />}
+      {errorAdd && <Message variant="danger">{errorAdd}</Message>}
       {loading ? (
         <Loader />
       ) : error ? (
-        <Message cvariant="danger">{error}</Message>
+        <Message variant="danger">{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className="table-sm">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Size</th>
-              <th>Price</th>
-              <th>In Stock Count</th>
-              <th>Ingredients</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product.id}>
-                <td>{product.id}</td>
-                <td>{product.name}</td>
-                <td>{product.size}</td>
-                <td>Rs. {product.price}</td>
-                <td>{product.countInStock}</td>
-                <td>{product.ingredients}</td>
-                <td>
-                  <LinkContainer to={`/admin/product/${product.id}/edit`}>
-                    <Button variant="light" className="btn-sm">
-                      <i className="fas fa-edit"></i>
-                    </Button>
-                  </LinkContainer>
-                  <Button
-                    variant="danger"
-                    className="btn-sm"
-                    onClick={() => deleteHandler(product.id)}
-                  >
-                    <i className="fas fa-trash"></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <EditableGrid
+          name="ProductsGrid"
+          rows={products}
+          columns={productColumns}
+          id="id"
+          addHandler={addProductHandler}
+          deleteHandler={deleteHandler}
+          updateHandler={updateHandler}
+        />
       )}
     </>
   );

@@ -6,6 +6,7 @@ import Loader from "../components/Loader";
 import Message from "../components/Message";
 import { login } from "../actions/userLoginActions";
 import FormContainer from "../components/FormContainer";
+import { isEmpty } from "lodash";
 
 const LoginScreen = ({ history, location }) => {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ const LoginScreen = ({ history, location }) => {
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
   useEffect(() => {
-    if (userInfo) {
+    if (!isEmpty(userInfo)) {
       history.push(redirect);
     }
   }, [history, userInfo, redirect]);
@@ -65,7 +66,7 @@ const LoginScreen = ({ history, location }) => {
         <Col>
           New Customer?
           <Link to={redirect ? `/register?redirect=${redirect}` : "/register"}>
-            Register
+            <span className="px-3">Register</span>
           </Link>
         </Col>
       </Row>

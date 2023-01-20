@@ -1,5 +1,5 @@
 main {
-  min-height: 80vh;
+  min-height: 85vh;
 }
 h1 {
   padding: 1rem 0rem;
@@ -8,4 +8,41 @@ h1 {
 h2 {
   padding: 0.5rem 0rem;
   font-size: 1.4rem;
+}
+.sameline-cls {
+  display: inline-flex;
+}
+.center-div-hor {
+  margin: auto;
+  width: 30%;
+}
+.footer-icon-img-cls {
+  height: 20px;
+  width: 20px;
+  cursor: pointer;
+  margin: 0px 5px;
+}
+.footer-cls {
+  background-color: #78c2ad;
+  color: aliceblue;
+  text-align: center;
+}
+.footer-row-cls {
+  position: relative;
+  margin: 0px 3px;
+  width: 100%;
+}
+.footer-div-left-cls {
+  text-align: left;
+}
+.footer-div-right-cls {
+  text-align: right;
+}
+@media screen and (max-width: 600px) {
+  .footer-div-left-cls {
+    text-align: center;
+  }
+  .footer-div-right-cls {
+    text-align: center;
+  }
 }

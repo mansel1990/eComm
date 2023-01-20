@@ -95,7 +95,7 @@ const RegisterScreen = ({ history, location }) => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="primary" className="my-3">
           Register
         </Button>
       </Form>
@@ -104,7 +104,7 @@ const RegisterScreen = ({ history, location }) => {
         <Col>
           Have an Account?
           <Link to={redirect ? `/login?redirect=${redirect}` : "/login"}>
-            Login
+            <span className="px-3">Login</span>
           </Link>
         </Col>
       </Row>
