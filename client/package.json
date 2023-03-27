@@ -1,6 +1,7 @@
 {
   "name": "client",
-  "proxy": "http://127.0.0.1:5001",
+  "homepage": "https://gaiasoapschennai.in/",
+  "proxy": "http://185.210.144.214:5001",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -12,6 +13,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.1",
+    "caniuse-lite": "^1.0.30001468",
     "html-react-parser": "^1.4.12",
     "lodash": "^4.17.21",
     "pusher-js": "^7.1.0-beta",
